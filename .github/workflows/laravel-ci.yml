@@ -1,0 +1,61 @@
+name: Laravel CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+        ports: ["3306:3306"]
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=5
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql, redis
+          coverage: none
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci || npm install --no-audit --no-fund
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Setup storage
+        run: php artisan storage:link || true
+      - name: Migrate
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: password
+        run: php artisan migrate --force
+      - name: Lint (Pint)
+        run: vendor/bin/pint --test || true
+      - name: Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: password
+        run: php artisan test --testsuite=Feature,Unit || php artisan test

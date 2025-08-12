@@ -13,6 +13,12 @@ Route::group([
 ], function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('nodes', \App\Http\Controllers\Admin\NodesController::class);
+    Route::post('nodes/{node}/ping',[\App\Http\Controllers\Admin\NodesController::class,'ping'])->name('nodes.ping');
+
+    Route::get('nodes/{node}/onboarding', [\App\Http\Controllers\Admin\NodeOnboardingController::class, 'show'])->name('nodes.onboarding');
+    Route::post('nodes/{node}/onboarding/token', [\App\Http\Controllers\Admin\NodeOnboardingController::class, 'generateToken'])->name('nodes.onboarding.token');
+
     // Users
     Route::resource('users', \App\Http\Controllers\Admin\UsersController::class);
 
@@ -52,3 +58,5 @@ Route::group([
     Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
     Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 });
+
+Route::resource('eggs', \App\Http\Controllers\Admin\EggsController::class);

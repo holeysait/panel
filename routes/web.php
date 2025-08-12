@@ -6,6 +6,8 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ServersController;
 
+app('router')->aliasMiddleware('locale', \App\Http\Middleware\SetLocale::class);
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class,'showLogin'])->name('login');
     Route::post('/login', [AuthController::class,'login'])->name('login.post');
@@ -13,7 +15,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class,'register'])->name('register.post');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','locale'])->group(function () {
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
@@ -27,3 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/locale', [SettingsController::class, 'updateLocale'])->name('settings.updateLocale');
     });
 });
+
+
+use App\Http\Controllers\LocaleController;
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');

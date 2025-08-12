@@ -1,0 +1,17 @@
+HOW TO APPLY (in project root):
+  tar -xzf panel_full_changes.tar.gz -C .
+
+Then:
+  php artisan migrate --force
+  php artisan optimize:clear
+  php artisan route:clear
+  php artisan view:clear
+
+Optional:
+  php artisan db:seed --class=EggSeeder
+
+Admin pages:
+  /admin/eggs, /admin/nodes (with Onboarding + Ping), /admin/servers (view)
+
+User pages:
+  /servers, /servers/create
