@@ -1,25 +1,20 @@
 @extends('layouts.app')
 @section('title','Вход')
 @section('content')
-<div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
-  <h1 class="text-xl font-semibold mb-4">Вход</h1>
-  @if ($errors->any())
-    <div class="mb-4 text-red-600">{{ $errors->first() }}</div>
-  @endif
-  <form method="POST" action="/login" class="space-y-4">
-    @csrf
-    <div>
-      <label class="block text-sm mb-1">Email</label>
-      <input name="email" type="email" value="{{ old('email') }}" required class="w-full border rounded px-3 py-2">
-    </div>
-    <div>
-      <label class="block text-sm mb-1">Пароль</label>
-      <input name="password" type="password" required class="w-full border rounded px-3 py-2">
-    </div>
-    <label class="inline-flex items-center gap-2">
-      <input type="checkbox" name="remember" class="rounded"> Запомнить меня
-    </label>
-    <button class="w-full bg-slate-900 text-white py-2 rounded">Войти</button>
-  </form>
-</div>
+  <h1>Вход</h1>
+  <div class="card auth-card">
+    <form method="POST" action="{{ route('login.post') }}">
+      @csrf
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
+      <label for="password">Пароль</label>
+      <input id="password" type="password" name="password" required>
+      <div class="checkbox">
+        <input id="remember" type="checkbox" name="remember">
+        <label for="remember" style="margin:0;font-weight:500">Запомнить меня</label>
+      </div>
+      <button class="btn primary block" type="submit">Войти</button>
+    </form>
+    <p class="muted" style="margin-top:10px;">Нет аккаунта? <a href="{{ route('register') }}">Регистрация</a></p>
+  </div>
 @endsection

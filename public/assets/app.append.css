@@ -1,0 +1,16 @@
+
+/* Container enforced */
+.container{max-width:1200px;margin:0 auto;padding:32px 20px;}
+.page-title{font-size:40px;font-weight:800;margin:12px 0 24px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+.mt-24{margin-top:24px;}
+.card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(17,24,39,0.06);padding:20px;}
+.card-title{font-weight:700;margin-bottom:10px;}
+.stat .stat-num{font-size:26px;font-weight:800;margin-top:6px;}
+.muted{color:#6b7280;}
+.table{width:100%;border-collapse:separate;border-spacing:0 0;border-top:1px solid #eef2f7;}
+.table th,.table td{padding:12px 10px;text-align:left;}
+.text-positive{color:#16a34a}.text-negative{color:#dc2626}
+
+@media (max-width: 920px){ .grid-3{grid-template-columns:1fr;} .grid-2{grid-template-columns:1fr;} .page-title{font-size:30px;} }

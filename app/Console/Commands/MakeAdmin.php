@@ -1,33 +1,35 @@
 <?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Domain\Billing\Models\Wallet;
 
 class MakeAdmin extends Command
 {
-    protected $signature = 'panel:make-admin {email} {password} {--name=Admin}';
-    protected $description = 'Create or update an admin user with a wallet';
+    protected $signature = 'panel:make-admin {email} {--name=} {--password=}';
+    protected $description = 'Create or update user as admin (and ensure wallet exists)';
 
     public function handle(): int
     {
         $email = $this->argument('email');
-        $password = $this->argument('password');
-        $name = $this->option('name');
+        $name = $this->option('name') ?? 'Admin';
+        $password = $this->option('password');
 
-        $user = User::firstOrCreate(['email' => $email], ['name' => $name, 'password' => Hash::make($password)]);
-        if (!$user->wasRecentlyCreated) {
-            $user->password = Hash::make($password);
-            $user->save();
-        }
+        $user = User::firstOrCreate(['email'=>$email], [
+            'name' => $name,
+            'password' => $password ? bcrypt($password) : bcrypt(str()->random(12)),
+        ]);
+
+        $user->is_admin = 1;
+        $user->save();
+
+        // Ensure wallet
         if (!$user->wallet) {
-            $wallet = new Wallet(['currency' => 'USD', 'balance_minor' => 0]);
-            $user->wallet()->save($wallet);
+            $user->wallet()->create(['currency'=>'USD','balance_minor'=>0]);
         }
-        $this->info("Admin ready: {$user->email}");
+
+        $this->info("User {$user->email} is now admin (id={$user->id}).");
         return self::SUCCESS;
     }
 }

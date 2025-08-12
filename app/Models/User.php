@@ -2,47 +2,41 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    use HasApiTokens, Notifiable;
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'avatar_path',
+        'locale',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'two_factor_enabled',
     ];
-    public function wallet() {
-        return $this->morphOne(\App\Domain\Billing\Models\Wallet::class, 'owner');
-    }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'two_factor_enabled' => 'boolean',
     ];
+
+    public function wallet() {
+        return $this->morphOne(\App\Domain\Billing\Models\Wallet::class, 'owner');
+    }
+    public function servers() {
+        return $this->hasMany(\App\Domain\Servers\Models\Server::class);
+    }
 }

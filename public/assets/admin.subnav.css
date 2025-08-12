@@ -1,0 +1,4 @@
+.admin-subnav{position:sticky;top:60px;background:#f7fbff;border-bottom:1px solid #eef1f4;z-index:40}
+.admin-subnav .tabs{display:flex;gap:8px;overflow:auto;padding:10px 0}
+.tab{display:inline-block;padding:8px 12px;border-radius:10px;color:#0e1525;background:#eef2f7;text-decoration:none}
+.tab.active{background:#0e1525;color:#fff}

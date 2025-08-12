@@ -1,0 +1,27 @@
+/* Basic admin sidebar/grid */
+.admin-grid{display:grid;grid-template-columns:248px 1fr;gap:24px;align-items:start}
+.admin-aside{position:sticky;top:64px;height:calc(100vh - 80px);padding:8px 12px;border-right:1px solid #e9eef5}
+.admin-aside__brand{font-weight:700;margin:8px 6px 12px;color:#0d1726;opacity:.8}
+.admin-menu{display:flex;flex-direction:column;gap:6px}
+.admin-menu__group{margin:10px 6px 6px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.04em}
+.admin-menu__item{padding:10px 12px;border-radius:10px;color:#1f2937;text-decoration:none;display:block}
+.admin-menu__item:hover{background:#f3f6fb}
+.admin-menu__item.is-active{background:#0f172a;color:#fff}
+.admin-content{min-height:60vh}
+
+/* Tables & forms small polish */
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th,.admin-table td{padding:10px 12px;border-bottom:1px solid #eef2f7;text-align:left;font-size:14px}
+.admin-actions{display:flex;gap:8px;align-items:center}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row .full{grid-column:1 / -1}
+.form-actions{display:flex;gap:12px;align-items:center;margin-top:10px}
+.btn{display:inline-block;padding:8px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#0f172a;color:#fff;text-decoration:none}
+.btn.secondary{background:#fff;color:#0f172a}
+.badge{padding:2px 8px;border-radius:999px;background:#eef2f7;color:#0f172a;font-size:12px}
+
+/* Responsive */
+@media (max-width: 960px){
+  .admin-grid{grid-template-columns:1fr}
+  .admin-aside{position:static;height:auto;border-right:none;border-bottom:1px solid #e9eef5;margin-bottom:12px}
+}

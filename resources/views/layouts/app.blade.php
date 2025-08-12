@@ -1,33 +1,60 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_','-',app()->getLocale()) }}">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title', 'BSPANel')</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'BSPANEL')</title>
+    @php
+        $cssPath = public_path('assets/app.css');
+        $jsPath = public_path('assets/app.js');
+        $v = file_exists($cssPath) ? filemtime($cssPath) : time();
+        $vj = file_exists($jsPath) ? filemtime($jsPath) : time();
+    @endphp
+    <link rel="stylesheet" href="{{ asset('assets/app.css') }}?v={{ $v }}">
 </head>
-<body class="bg-slate-50 text-slate-900">
-  <nav class="bg-white border-b sticky top-0 z-10">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="{{ route('dashboard') }}" class="font-bold">BSPANel</a>
-      <div class="flex items-center gap-4">
-        @auth
-          <a href="{{ route('servers.index') }}" class="hover:underline">Серверы</a>
-          <a href="{{ route('wallet.index') }}" class="hover:underline">Кошелёк</a>
-          <form method="POST" action="{{ route('logout') }}" class="inline">
+<body>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="{{ auth()->check() ? route('dashboard') : url('/') }}">BSPANEL</a>
+
+    <button class="burger" aria-label="Menu" onclick="window.toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="menu" id="top-menu">
+      @auth
+        <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Дашборд</a>
+        <a href="{{ route('servers.index') }}" class="{{ request()->is('servers') ? 'active' : '' }}">Серверы</a>
+        <a href="{{ route('wallet.index') }}" class="{{ request()->is('wallet') ? 'active' : '' }}">Кошелёк</a>
+        <a href="{{ route('settings.index') }}" class="{{ request()->is('settings') ? 'active' : '' }}">Настройки</a>
+      @endauth
+    </nav>
+
+    <div class="nav-right">
+      @guest
+        <a class="btn ghost" href="{{ route('login') }}">Войти</a>
+        <a class="btn primary" href="{{ route('register') }}">Регистрация</a>
+      @endguest
+      @auth
+        <span class="hello">Привет, {{ \Illuminate\Support\Str::limit(auth()->user()->name ?? auth()->user()->email, 18) }}</span>
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button class="px-3 py-1 rounded bg-slate-900 text-white">Выйти</button>
-          </form>
-        @endauth
-        @guest
-          <a href="{{ route('login') }}" class="hover:underline">Войти</a>
-          <a href="{{ route('register') }}" class="hover:underline">Регистрация</a>
-        @endguest
-      </div>
+            <button class="btn primary" type="submit">Выйти</button>
+        </form>
+      @endauth
     </div>
-  </nav>
-  <main class="max-w-7xl mx-auto px-4 py-6">
-    @yield('content')
-  </main>
+  </div>
+</header>
+
+<main class="container section">
+  @includeIf('partials.flash')
+  @yield('content')
+</main>
+
+<footer class="footer">
+  <div class="container">© {{ date('Y') }} BSPANEL</div>
+</footer>
+
+<script src="{{ asset('assets/app.js') }}?v={{ $vj }}"></script>
 </body>
 </html>

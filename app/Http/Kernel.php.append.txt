@@ -1,0 +1,2 @@
+// In protected $routeMiddleware add this line:
+// 'admin' => \App\Http\Middleware\AdminMiddleware::class,

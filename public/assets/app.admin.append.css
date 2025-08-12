@@ -1,0 +1,5 @@
+.admin-bar{background:#fff; border-radius:12px; padding:8px 12px; box-shadow:0 2px 10px rgba(15,23,42,.05); margin-bottom:18px;}
+.admin-nav{display:flex; flex-wrap:wrap; gap:10px}
+.admin-nav a{padding:8px 12px; border-radius:10px; background:#f3f5f8; color:#111827; text-decoration:none; font-weight:500}
+.admin-nav a.active{background:#0f172a; color:#fff}
+@media (max-width: 860px){ .admin-nav{overflow-x:auto; white-space:nowrap;} }
