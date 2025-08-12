@@ -1,0 +1,22 @@
+// ==== BSPANEL UI routes (append to routes/web.php) ====
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ServersPageController;
+use App\Http\Controllers\WalletPageController;
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'show'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
+
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/servers', [ServersPageController::class, 'index'])->name('servers.index');
+    Route::get('/wallet', [WalletPageController::class, 'index'])->name('wallet.index');
+});

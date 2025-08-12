@@ -1,0 +1,4 @@
+// ==== BSPANEL (append inside DatabaseSeeder::run()) ====
+$this->call([
+    \Database\Seeders\PriceSeeder::class,
+]);

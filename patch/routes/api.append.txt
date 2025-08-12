@@ -1,0 +1,11 @@
+// Append to routes/api.php once
+use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\PriceController;
+use App\Http\Controllers\Api\EggImportController;
+use App\Http\Controllers\Api\ServerController;
+Route::post('/wallets/{wallet}/deposit', [WalletController::class, 'deposit']);
+Route::get('/wallets/{wallet}/transactions', [WalletController::class, 'transactions']);
+Route::get('/prices', [PriceController::class, 'index']);
+Route::put('/prices/{price}', [PriceController::class, 'update']);
+Route::post('/eggs/import', [EggImportController::class, 'import']);
+Route::post('/servers', [ServerController::class, 'store']);
